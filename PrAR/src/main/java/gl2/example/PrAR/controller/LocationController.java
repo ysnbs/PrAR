@@ -21,13 +21,16 @@ public class LocationController {
     @PostMapping("/louer")
     public Location louer(@RequestBody Map<String, Object> body) {
 
-        int iduser = (int) body.get("iduser");
-        String matricule = (String) body.get("matricule");
+            int iduser = (int) body.get("iduser");
+            String matricule = (String) body.get("matricule");
 
-        Date debut = new Date((long) body.get("debut"));
-        Date fin = new Date((long) body.get("fin"));
+            String debutStr = (String) body.get("debut");
+            String finStr = (String) body.get("fin");
 
-        return locationService.louerVoiture(iduser, matricule, debut, fin);
+            Date debut = java.sql.Date.valueOf(debutStr);
+            Date fin = java.sql.Date.valueOf(finStr);
+
+            return locationService.louerVoiture(iduser, matricule, debut, fin);
     }
     @GetMapping("/user/{iduser}")
     public List<Location> historiqueUser(@PathVariable int iduser) {
@@ -38,7 +41,20 @@ public class LocationController {
     public List<Location> getAll() {
         return locationService.getAll();
     }
+    @PutMapping("/{id}")
+    public Location update(@RequestBody Map<String, Object> body,@PathVariable Long id) {
 
+        int iduser = (int) body.get("iduser");
+        String matricule = (String) body.get("matricule");
+
+        String debutStr = (String) body.get("debut");
+        String finStr = (String) body.get("fin");
+
+        Date debut = java.sql.Date.valueOf(debutStr);
+        Date fin = java.sql.Date.valueOf(finStr);
+
+        return locationService.updateLocation(id,iduser, matricule, debut, fin);
+    }
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
         locationService.deleteLocation(id);

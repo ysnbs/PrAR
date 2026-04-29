@@ -42,7 +42,7 @@ public class LocationService {
         if (voiture.getEtat() != Voiture.Etat.DISPO) {
             return null;
         }
-        List<Location> locations = locationRepository.findBymatricule(matricule);
+        List<Location> locations = locationRepository.findByMatricule(matricule);
 
         for (Location l : locations) {
             if (debut.before(l.getDateFin()) && fin.after(l.getDateDebut())) {
@@ -69,7 +69,7 @@ public class LocationService {
     }
 
     public List<Location> getHistoriqueUser(int iduser) {
-        return locationRepository.findByUser(iduser);
+        return locationRepository.findByIduser(iduser);
     }
 
     public List<Location> getAll() {
@@ -78,5 +78,39 @@ public class LocationService {
 
     public void deleteLocation(Long id) {
         locationRepository.deleteById(id);
+    }
+    public Location updateLocation(Long id, int iduser, String matricule, Date debut, Date fin) {
+
+        Location location = locationRepository.findById(id).orElse(null);
+        if (location == null) return null;
+
+        if (!fin.after(debut)) return null;
+
+        Voiture voiture = voitureRepository.findById(matricule).orElse(null);
+        if (voiture == null) return null;
+
+        List<Location> locations = locationRepository.findByMatricule(matricule);
+
+        for (Location l : locations) {
+            if (!l.getId().equals(id)) {
+                if (debut.before(l.getDateFin()) && fin.after(l.getDateDebut())) {
+                    return null;
+                }
+            }
+        }
+
+        long diff = fin.getTime() - debut.getTime();
+        int jours = (int) (diff / (1000 * 60 * 60 * 24)) + 1;
+
+        double total = jours * voiture.getPrixParJour();
+
+        location.setUser(iduser);
+        location.setVoiture(matricule);
+        location.setDateDebut(debut);
+        location.setDateFin(fin);
+        location.setNombreJour(jours);
+        location.setPrixTotal(total);
+
+        return locationRepository.save(location);
     }
 }
