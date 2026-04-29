@@ -42,6 +42,13 @@ public class LocationService {
         if (voiture.getEtat() != Voiture.Etat.DISPO) {
             return null;
         }
+        List<Location> locations = locationRepository.findBymatricule(matricule);
+
+        for (Location l : locations) {
+            if (debut.before(l.getDateFin()) && fin.after(l.getDateDebut())) {
+                return null;
+            }
+        }
 
         long diff = fin.getTime() - debut.getTime();
         int jours = (int) (diff / (1000 * 60 * 60 * 24))+1;
