@@ -15,11 +15,9 @@ public class Location {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    private User user;
+    private int iduser;
 
-    @ManyToOne
-    private Voiture voiture;
+    private String  matricule;
 
     private Date dateDebut;
     private Date dateFin;
@@ -29,10 +27,10 @@ public class Location {
 
     public Location() {
     }
-    public Location(Long id, User user, Voiture voiture, Date dateDebut, Date dateFin, int nombreJour, double prixTotal) {
+    public Location(Long id, int user, String voiture, Date dateDebut, Date dateFin, int nombreJour, double prixTotal) {
         this.id = id;
-        this.user = user;
-        this.voiture = voiture;
+        this.iduser = user;
+        this.matricule = voiture;
         this.dateDebut = dateDebut;
         this.dateFin = dateFin;
         this.nombreJour = nombreJour;
@@ -47,20 +45,20 @@ public class Location {
         this.id = id;
     }
 
-    public User getUser() {
-        return user;
+    public int getUser() {
+        return iduser;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUser(int user) {
+        this.iduser = user;
     }
 
-    public Voiture getVoiture() {
-        return voiture;
+    public String getVoiture() {
+        return matricule;
     }
 
-    public void setVoiture(Voiture voiture) {
-        this.voiture = voiture;
+    public void setVoiture(String voiture) {
+        this.matricule = voiture;
     }
 
     public Date getDateDebut() {
