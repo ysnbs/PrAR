@@ -77,6 +77,16 @@ public class LocationService {
     }
 
     public void deleteLocation(Long id) {
+        Location location = locationRepository.findById(id).orElse(null);
+        if (location == null) return;
+
+        Voiture voiture = voitureRepository.findById(location.getVoiture()).orElse(null);
+
+        if (voiture != null) {
+            voiture.setEtat(Voiture.Etat.DISPO);
+            voitureRepository.save(voiture);
+        }
+
         locationRepository.deleteById(id);
     }
     public Location updateLocation(Long id, int iduser, String matricule, Date debut, Date fin) {
