@@ -17,12 +17,12 @@ public class SecurityConfig {
         return new InMemoryUserDetailsManager(
                 User.withDefaultPasswordEncoder()
                         .username("admin")
-                        .password("admin123")
+                        .password("password")
                         .roles("ADMIN")
                         .build(),
                 User.withDefaultPasswordEncoder()
                         .username("client")
-                        .password("client123")
+                        .password("password")
                         .roles("CLIENT")
                         .build()
         );
