@@ -61,4 +61,11 @@ public class VoitureService {
     public void delete(String matricule) {
         voitureRepository.deleteById(matricule);
     }
+
+    public Voiture updatePrix(String matricule, double newPrice) {
+        Voiture voiture = voitureRepository.findById(matricule).orElse(null);
+        if (voiture == null) return null;
+        voiture.setPrixParJour(newPrice);
+        return voitureRepository.save(voiture);
+    }
 }
